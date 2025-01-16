@@ -10,3 +10,6 @@ Useful resources:
 - Blocking and Non-Blocking Code: https://nodejs.org/en/docs/guides/dont-block-the-event-loop/
 
 - HTTP Headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+
+- Node vscode debugging: https://code.visualstudio.com/docs/nodejs/nodejs-debugging
+
