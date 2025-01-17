@@ -1,19 +1,16 @@
 const express = require('express');
+const path = require('path');
+
+const adminRoutes = require('./routes/admin.js')
+const shopRoutes = require('./routes/shop.js');
 
 const app = express();
 
-app.use('/', (req, res, next) => {
-  console.log('all middleware!');
-  next(); // Allows the request to continue to the next middleware in line
-});
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
-app.use('/test', (req, res, next) => {
-  console.log('In test middleware!');
-  res.send('<h1>Hello from test!</h1>');
-});
-
-app.use('/', (req, res, next) => {
-  res.send('<h1>Hello from home!</h1>');
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'views', 'not-found.html'));
 });
 
 app.listen(3000);
