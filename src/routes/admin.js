@@ -7,7 +7,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 const products = [];
 
 router.get('/add-product', (req, res) => {
-  res.render('add-product', { docTitle: 'Add Product' });
+  res.render('add-product', { docTitle: 'Add Product', path: '/admin/add-product' });
 });
 
 router.post('/add-product', (req, res) => {
