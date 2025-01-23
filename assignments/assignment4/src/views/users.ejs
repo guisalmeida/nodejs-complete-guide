@@ -2,18 +2,19 @@
 
   <link rel="stylesheet" href="/css/user.css">
   </head>
+  <%- include('includes/navigation.ejs') %>
 
-  <body>
-    <% if (users.length> 0) { %>
-      <ul>
-        <% for (let user of users) { %>
-          <li>
-            <%= user.name %>
-          </li>
+    <body>
+      <% if (users.length> 0) { %>
+        <ul>
+          <% for (let user of users) { %>
+            <li>
+              <%= user.name %>
+            </li>
+            <% } %>
+        </ul>
+        <% } else { %>
+          <p>No users found</p>
           <% } %>
-      </ul>
-      <% } else { %>
-        <p>No users found</p>
-        <% } %>
 
-          <%- include('includes/end.ejs') %>
+            <%- include('includes/end.ejs') %>
