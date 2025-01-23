@@ -14,3 +14,5 @@ Useful resources:
 - Node vscode debugging: https://code.visualstudio.com/docs/nodejs/nodejs-debugging
 
 - Express.js Official Docs: https://expressjs.com/en/starter/installing.html
+
+- EJS Docs: http://ejs.co/#docs

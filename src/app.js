@@ -4,6 +4,8 @@ const path = require('path');
 const { adminRoutes } = require('./routes/admin.js')
 const { shopRoutes } = require('./routes/shop.js');
 
+const errorController = require('./controllers/errorController.js');
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -14,8 +16,6 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res) => {
-  res.status(404).render('not-found', { docTitle: 'Page Not Found' });
-});
+app.use(errorController.getError);
 
 app.listen(3000);
