@@ -11,11 +11,14 @@ const postAddProduct = (req, res) => {
 };
 
 const getProducts = (req, res) => {
-  res.render('shop', {
-    prods: Product.fetchAll(),
-    docTitle: 'Shop',
-    path: '/',
+  Product.fetchAll((products) => {
+    res.render('shop', {
+      prods: products,
+      docTitle: 'Shop',
+      path: '/',
+    });
   });
+
 };
 
 
