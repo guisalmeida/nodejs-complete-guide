@@ -24,6 +24,10 @@ const getCart = (req, res) => {
   res.render('shop/cart', { docTitle: 'cart', path: '/cart' });
 };
 
+const getOrder = (req, res) => {
+  res.render('shop/order', { docTitle: 'order', path: '/order' });
+};
+
 const getCheckout = (req, res) => {
   res.render('shop/checkout', { docTitle: 'checkout', path: '/checkout' });
 };
@@ -33,7 +37,7 @@ const getProduct = (req, res) => {
 };
 
 const postAddProduct = (req, res) => {
-  const product = new Product(req.body.title);
+  const product = new Product(req.body);
   product.save();
   res.redirect('/');
 };
@@ -43,6 +47,7 @@ module.exports = {
   postAddProduct,
   getProducts,
   getCart,
+  getOrder,
   getCheckout,
   getProduct
 };
