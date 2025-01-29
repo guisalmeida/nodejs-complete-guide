@@ -1,9 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 
-const productsPath = path.join(path.dirname(require.main.filename), 'data', 'products.json');
+const productsPath = path.join(path.dirname(require.main.filename), 'src', 'data', 'products.json');
 
 const getProductsFromFile = (callback) => {
+  console.log(productsPath);
+
   fs.readFile(productsPath, (err, fileContent) => {
     if (err) {
       console.log('error', productsPath);
@@ -16,7 +18,8 @@ const getProductsFromFile = (callback) => {
 };
 
 class Product {
-  constructor({ title, imageUrl, price, description }) {
+  constructor({ productId = null, title, imageUrl, price, description }) {
+    this.id = productId;
     this.title = title;
     this.imageUrl = imageUrl;
     this.price = price;
@@ -25,10 +28,18 @@ class Product {
 
   save() {
     getProductsFromFile((products) => {
-      products.push(this);
+      if (this.id) {
+        const existingProdIndex = products.findIndex((prod) => prod.id === this.id);
+        products[existingProdIndex] = this;
+      } else {
+        this.id = Math.random().toString();
+        products.push(this);
+      }
 
       fs.writeFile(productsPath, JSON.stringify(products), (err) => {
-        console.log(err);
+        if (err) {
+          console.log(err);
+        }
       });
     });
   };

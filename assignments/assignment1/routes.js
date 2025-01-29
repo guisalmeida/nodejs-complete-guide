@@ -39,7 +39,6 @@ const requestHandle = (req, res) => {
 
     req.on('end', () => {
       const parsedBody = Buffer.concat(body).toString();
-      console.log(parsedBody);
       const username = parsedBody.split('=')[1];
 
       res.write('<html>')
