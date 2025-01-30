@@ -15,4 +15,6 @@ Useful resources:
 
 - Express.js Official Docs: https://expressjs.com/en/starter/installing.html
 
+- Express.js routing: https://expressjs.com/en/guide/routing.html
+
 - EJS Docs: http://ejs.co/#docs

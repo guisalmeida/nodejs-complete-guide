@@ -28,12 +28,27 @@ class Cart {
 
       const updatedCart = JSON.parse(fileContent);
       const removedProd = updatedCart.products.find((prod) => prod.id === prodId);
+      if (!removedProd) return;
 
       updatedCart.products = updatedCart.products.filter((prod) => prod.id !== prodId);
       updatedCart.totalPrice = updatedCart.totalPrice - productPrice * removedProd.qty;
+      console.log(updatedCart);
+
 
       fs.writeFile(cartPath, JSON.stringify(updatedCart), (err) => console.log(err));
     });
+  };
+
+  static getCart(callback) {
+    fs.readFile(cartPath, (err, fileContent) => {
+      if (err) {
+        return callback(null);
+      } else {
+        const cart = JSON.parse(fileContent);
+        return callback(cart);
+      };
+    });
+
   }
 }
 

@@ -8,7 +8,28 @@
     <%- include('../includes/navigation.ejs') %>
 
       <main>
-        <h1>cart</h1>
+        <% if (products.length> 0) { %>
+          <ul>
+            <% products.forEach(product=> { %>
+              <li class="product">
+                <h3>
+                  <%= product.ProdData.title %> (<%= product.qty %>)
+                </h3>
+                <p>
+                  <%= product.ProdData.description %>
+                </p>
+                <p>$<%= product.ProdData.price %>
+                </p>
+                <form action="/delete-cart-item" method="POST">
+                  <input type="hidden" name="productId" value="<%= product.ProdData.id %>">
+                  <button type="submit">Remove from Cart</button>
+                </form>
+              </li>
+              <% }) %>
+          </ul>
+          <% } else { %>
+            <h1>No products found!</h1>
+            <% } %>
       </main>
 
       <%- include('../includes/end.ejs') %>
