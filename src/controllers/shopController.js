@@ -30,7 +30,7 @@ const getPostCart = (req, res) => {
 
   Product.findById(prodId, (product) => {
     Cart.addProduct(prodId, product.price);
-  })
+  });
 
   res.redirect('/cart');
 };

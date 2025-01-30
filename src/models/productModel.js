@@ -1,17 +1,13 @@
 const path = require('path');
 const fs = require('fs');
 
+const Cart = require('./cartModel');
+
 const productsPath = path.join(path.dirname(require.main.filename), 'src', 'data', 'products.json');
 
 const getProductsFromFile = (callback) => {
-  console.log(productsPath);
-
   fs.readFile(productsPath, (err, fileContent) => {
-    if (err) {
-      console.log('error', productsPath);
-
-      return callback([]);
-    }
+    if (err) return callback([]);
 
     return callback(JSON.parse(fileContent));
   });
@@ -43,6 +39,19 @@ class Product {
       });
     });
   };
+
+  static deleteById(id) {
+    getProductsFromFile((products) => {
+      const removedProd = products.find((prod) => prod.id === id);
+      const updatedProducts = products.filter((prod) => prod.id !== id);
+
+      fs.writeFile(productsPath, JSON.stringify(updatedProducts), (err) => {
+        if (!err) {
+          Cart.deleteProduct(id, removedProd.price);
+        }
+      });
+    })
+  }
 
   static fetchAll(callback) {
     getProductsFromFile(callback);
