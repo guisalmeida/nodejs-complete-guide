@@ -1,24 +1,26 @@
+/* eslint-disable no-unused-vars */
 const Product = require('../models/productModel');
 const Cart = require('../models/cartModel');
 
 const getIndex = (req, res) => {
-  Product.fetchAll((products) => {
+  Product.fetchAll().then(([queryResult, fieldData]) => {
     res.render('shop/index', {
-      prods: products,
+      prods: queryResult,
       docTitle: 'Shop',
       path: '/',
     });
-  });
+  }).catch((err) => console.log(err));
+
 };
 
 const getProducts = (req, res) => {
-  Product.fetchAll((products) => {
+  Product.fetchAll().then(([queryResult, fieldData]) => {
     res.render('shop/product-list', {
-      prods: products,
+      prods: queryResult,
       docTitle: 'Product List',
       path: '/products',
     });
-  });
+  }).catch((err) => console.log(err));
 };
 
 const getCart = (req, res) => {
@@ -63,9 +65,17 @@ const getCheckout = (req, res) => {
 const getProduct = (req, res) => {
   const prodId = req.params.productId;
 
-  Product.findById(prodId, (product) => {
-    res.render('shop/product-detail', { docTitle: 'product detail', path: '/products', product: product });
-  });
+  Product.findById(prodId).then(([queryResult, fieldData]) => {
+    console.log(queryResult);
+
+    res.render(
+      'shop/product-detail',
+      {
+        docTitle: 'product detail',
+        path: '/products',
+        product: queryResult[0]
+      });
+  }).catch((err) => console.log(err));
 };
 
 const deleteCartItem = (req, res) => {

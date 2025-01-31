@@ -18,3 +18,5 @@ Useful resources:
 - Express.js routing: https://expressjs.com/en/guide/routing.html
 
 - EJS Docs: http://ejs.co/#docs
+
+- Learn more about MySQL/ SQL in General: https://www.w3schools.com/sql/

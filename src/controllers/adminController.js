@@ -20,8 +20,9 @@ const getAdminProducts = (req, res) => {
 
 const postAddProduct = (req, res) => {
   const product = new Product(req.body);
-  product.save();
-  res.redirect('/');
+  product.save().then(() => {
+    res.redirect('/');
+  }).catch((err) => console.log(err));
 };
 
 const getEditProduct = (req, res) => {
