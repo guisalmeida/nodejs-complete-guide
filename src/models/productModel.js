@@ -1,37 +1,28 @@
-/* eslint-disable no-unused-vars */
-const db = require('../utils/database');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../utils/database');
 
-class Product {
-  constructor({ productId = null, title, imageUrl, price, description }) {
-    this.id = productId;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.price = price;
-    this.description = description;
+const Product = sequelize.define('product',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true
+    },
+    title: DataTypes.STRING,
+    price: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }
-
-  save() {
-    return db.execute(
-      'INSERT INTO products (title, price, imageUrl, description) VALUES (?,?,?,?);',
-      [
-        this.title,
-        this.price,
-        this.imageUrl,
-        this.description
-      ]);
-  };
-
-  static fetchAll() {
-    return db.execute('SELECT * FROM products;');
-  };
-
-  static findById(id) {
-    return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
-  };
-
-  static deleteById(id) {
-    return db.execute('DELETE FROM products WHERE products.id = ?', [id]);
-  };
-}
+);
 
 module.exports = Product;
