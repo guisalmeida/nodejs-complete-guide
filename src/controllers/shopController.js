@@ -27,8 +27,8 @@ const getCart = (req, res) => {
   const cartProducts = [];
 
   Cart.getCart((cart) => {
-    Product.fetchAll((products) => {
-      for (const product of products) {
+    Product.fetchAll().then(([queryResult, fieldData]) => {
+      for (const product of queryResult) {
         const cartProdData = cart.products.find((cartProd) => cartProd.id === product.id);
         if (cartProdData) {
           cartProducts.push({ ProdData: product, qty: cartProdData.qty });
@@ -39,17 +39,17 @@ const getCart = (req, res) => {
           products: cartProducts
         });
       }
-    });
-
+    }).catch((err) => console.log(err));
   });
 };
 
 const getPostCart = (req, res) => {
   const prodId = req.body.productId;
 
-  Product.findById(prodId, (product) => {
+  Product.findById(prodId).then(([queryResult, fieldData]) => {
+    const product = queryResult[0];
     Cart.addProduct(prodId, product.price);
-  });
+  }).catch((err) => console.log(err));
 
   res.redirect('/cart');
 };

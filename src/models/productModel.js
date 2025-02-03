@@ -29,7 +29,9 @@ class Product {
     return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
   };
 
-  static deleteById(id) { };
+  static deleteById(id) {
+    return db.execute('DELETE FROM products WHERE products.id = ?', [id]);
+  };
 }
 
 module.exports = Product;

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const Product = require('../models/productModel');
 
 const getAddProduct = (req, res) => {
@@ -9,13 +10,13 @@ const getAddProduct = (req, res) => {
 };
 
 const getAdminProducts = (req, res) => {
-  Product.fetchAll((products) => {
+  Product.fetchAll().then(([queryResult, fieldData]) => {
     res.render('admin/products', {
-      prods: products,
+      prods: queryResult,
       docTitle: 'Admin Products',
       path: '/admin/products',
     });
-  });
+  }).catch((err) => console.log(err));
 };
 
 const postAddProduct = (req, res) => {
@@ -34,8 +35,8 @@ const getEditProduct = (req, res) => {
 
   const prodId = req.params.productId;
 
-  Product.findById(prodId, (product) => {
-    if (!product) {
+  Product.findById(prodId).then(([queryResult, fieldData]) => {
+    if (!queryResult.length) {
       return res.redirect('/');
     }
 
@@ -43,9 +44,9 @@ const getEditProduct = (req, res) => {
       docTitle: 'Edit Product',
       path: '/admin/edit-product',
       editMode: isEditMode,
-      product: product
+      product: queryResult[0]
     });
-  });
+  }).catch((err) => console.log(err));
 };
 
 const postEditProduct = (req, res) => {
