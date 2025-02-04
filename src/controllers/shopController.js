@@ -3,23 +3,46 @@ const Product = require('../models/productModel');
 const Cart = require('../models/cartModel');
 
 const getIndex = (req, res) => {
-  Product.fetchAll().then(([queryResult, fieldData]) => {
+  Product.findAll().then((products) => {
     res.render('shop/index', {
-      prods: queryResult,
+      prods: products,
       docTitle: 'Shop',
       path: '/',
     });
   }).catch((err) => console.log(err));
-
 };
 
 const getProducts = (req, res) => {
-  Product.fetchAll().then(([queryResult, fieldData]) => {
+  Product.findAll().then((products) => {
     res.render('shop/product-list', {
-      prods: queryResult,
+      prods: products,
       docTitle: 'Product List',
       path: '/products',
     });
+  }).catch((err) => console.log(err));
+};
+
+const getProduct = (req, res) => {
+  const prodId = req.params.productId;
+
+  // Product.findAll({ where: { id: prodId } }).then((products) => {
+  //   res.render(
+  //     'shop/product-detail',
+  //     {
+  //       docTitle: 'product detail',
+  //       path: '/products',
+  //       product: products[0]
+  //     });
+  // }).catch((err) => console.log(err));
+
+  Product.findByPk(prodId).then((product) => {
+    res.render(
+      'shop/product-detail',
+      {
+        docTitle: 'product detail',
+        path: '/products',
+        product: product
+      });
   }).catch((err) => console.log(err));
 };
 
@@ -60,22 +83,6 @@ const getOrder = (req, res) => {
 
 const getCheckout = (req, res) => {
   res.render('shop/checkout', { docTitle: 'checkout', path: '/checkout' });
-};
-
-const getProduct = (req, res) => {
-  const prodId = req.params.productId;
-
-  Product.findById(prodId).then(([queryResult, fieldData]) => {
-    console.log(queryResult);
-
-    res.render(
-      'shop/product-detail',
-      {
-        docTitle: 'product detail',
-        path: '/products',
-        product: queryResult[0]
-      });
-  }).catch((err) => console.log(err));
 };
 
 const deleteCartItem = (req, res) => {
