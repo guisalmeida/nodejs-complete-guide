@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const sequelize = require('./src/utils/database');
 
-const Product = require('./src/models/productModel');
-const User = require('./src/models/userModel');
+const { ProductModel } = require('./src/models/productModel');
+const { UserModel } = require('./src/models/userModel');
+const { CartModel } = require('./src/models/cartModel');
+const { CartProductModel } = require('./src/models/cartProductModel');
 
 const { adminRoutes } = require('./src/routes/admin.js')
 const { shopRoutes } = require('./src/routes/shop.js');
@@ -18,7 +20,7 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findByPk(1)
+  UserModel.findByPk(1)
     .then((user) => {
       req.user = user;
       next();
@@ -31,14 +33,18 @@ app.use(shopRoutes);
 
 app.use(errorController.getError);
 
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-User.hasMany(Product);
+ProductModel.belongsTo(UserModel, { constraints: true, onDelete: 'CASCADE' });
+UserModel.hasMany(ProductModel);
+UserModel.hasOne(CartModel);
+CartModel.belongsTo(UserModel);
+CartModel.belongsToMany(ProductModel, { through: CartProductModel })
+ProductModel.belongsToMany(CartModel, { through: CartProductModel })
 
 sequelize
   // use FORCE only in development mode
   // .sync({ force: true })
   .sync()
-  .then(() => User.findByPk(1))
-  .then((user) => user ? user : User.create({ name: 'Dude Dummy', email: 'dummy@test.com' }))
+  .then(() => UserModel.findByPk(1))
+  .then((user) => user ? user : UserModel.create({ name: 'Dude Dummy', email: 'dummy@test.com' }))
   .then(() => app.listen(3000))
   .catch(err => console.log(err));
