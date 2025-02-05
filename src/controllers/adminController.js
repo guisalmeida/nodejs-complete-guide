@@ -1,6 +1,17 @@
 /* eslint-disable no-unused-vars */
 const Product = require('../models/productModel');
 
+const getAdminProducts = (req, res) => {
+  req.user.getProducts()
+    .then((products) => {
+      res.render('admin/products', {
+        prods: products,
+        docTitle: 'Admin Products',
+        path: '/admin/products',
+      });
+    }).catch((err) => console.log(err));
+};
+
 const getAddProduct = (req, res) => {
   res.render('admin/edit-product', {
     docTitle: 'Edit Product',
@@ -9,20 +20,12 @@ const getAddProduct = (req, res) => {
   });
 };
 
-const getAdminProducts = (req, res) => {
-  Product.findAll().then((products) => {
-    res.render('admin/products', {
-      prods: products,
-      docTitle: 'Admin Products',
-      path: '/admin/products',
-    });
-  }).catch((err) => console.log(err));
-};
-
 const postAddProduct = (req, res) => {
-  Product.create(req.body).then(() => {
-    res.redirect('/admin/products');
-  }).catch(err => console.log(err));
+  req.user.createProduct(req.body)
+    .then(() => {
+      res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
 };
 
 const getEditProduct = (req, res) => {
