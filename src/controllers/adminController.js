@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const Product = require('../models/productModel');
+const { ProductModel } = require('../models/productModel');
 
 const getAdminProducts = (req, res) => {
   req.user.getProducts()
@@ -37,7 +37,7 @@ const getEditProduct = (req, res) => {
 
   const prodId = req.params.productId;
 
-  Product.findByPk(prodId).then((product) => {
+  ProductModel.findByPk(prodId).then((product) => {
     if (!product) {
       return res.redirect('/');
     }
@@ -52,7 +52,7 @@ const getEditProduct = (req, res) => {
 };
 
 const postEditProduct = (req, res) => {
-  Product.findByPk(req.body.productId).then((product) => {
+  ProductModel.findByPk(req.body.productId).then((product) => {
     product.title = req.body.title;
     product.price = req.body.price;
     product.description = req.body.description;
@@ -67,7 +67,7 @@ const postEditProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   const prodId = req.body.productId;
 
-  Product.findByPk(prodId).then((product) => {
+  ProductModel.findByPk(prodId).then((product) => {
     return product.destroy();
   }).then(() => {
     res.redirect('/admin/products');
