@@ -46,5 +46,6 @@ sequelize
   .sync()
   .then(() => UserModel.findByPk(1))
   .then((user) => user ? user : UserModel.create({ name: 'Dude Dummy', email: 'dummy@test.com' }))
+  .then((user) => user.createCart())
   .then(() => app.listen(3000))
   .catch(err => console.log(err));
