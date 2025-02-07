@@ -20,3 +20,5 @@ Useful resources:
 - EJS Docs: http://ejs.co/#docs
 
 - Learn more about MySQL/ SQL in General: https://www.w3schools.com/sql/
+
+- Sequelize Official Docs: http://docs.sequelizejs.com/
