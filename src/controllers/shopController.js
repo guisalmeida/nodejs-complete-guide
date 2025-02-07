@@ -99,12 +99,42 @@ const getPostCart = (req, res) => {
 };
 
 const getOrder = (req, res) => {
-  res.render('shop/order', { docTitle: 'order', path: '/order' });
+  req.user.getOrders({ include: ['products'] })
+    .then((orders) => {
+      res.render('shop/orders', {
+        docTitle: 'orders',
+        path: '/orders',
+        orders: orders
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
-const getCheckout = (req, res) => {
-  res.render('shop/checkout', { docTitle: 'checkout', path: '/checkout' });
-};
+const postOrder = (req, res) => {
+  let fetchedCart;
+  req.user.getCart()
+    .then((cart) => {
+      fetchedCart = cart;
+      return cart.getProducts();
+    })
+    .then((products) => {
+      req.user.createOrder()
+        .then((order) => {
+          order.addProducts(products.map((prod) => {
+            prod.order_product = { quantity: prod.cart_product.quantity };
+            return prod;
+          }))
+        })
+        .catch(err => console.log(err))
+    })
+    .then(() => {
+      return fetchedCart.setProducts(null);
+    })
+    .then(() => {
+      res.redirect('/orders');
+    })
+    .catch(err => console.log(err));
+}
 
 const deleteCartItem = (req, res) => {
   const prodId = req.body.productId;
@@ -126,7 +156,7 @@ module.exports = {
   getCart,
   getPostCart,
   getOrder,
-  getCheckout,
   getProduct,
-  deleteCartItem
+  deleteCartItem,
+  postOrder
 };

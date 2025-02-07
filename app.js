@@ -6,6 +6,8 @@ const { ProductModel } = require('./src/models/productModel');
 const { UserModel } = require('./src/models/userModel');
 const { CartModel } = require('./src/models/cartModel');
 const { CartProductModel } = require('./src/models/cartProductModel');
+const { OrderModel } = require('./src/models/orderModel');
+const { OrderProductModel } = require('./src/models/orderProductModel');
 
 const { adminRoutes } = require('./src/routes/admin.js')
 const { shopRoutes } = require('./src/routes/shop.js');
@@ -37,8 +39,12 @@ ProductModel.belongsTo(UserModel, { constraints: true, onDelete: 'CASCADE' });
 UserModel.hasMany(ProductModel);
 UserModel.hasOne(CartModel);
 CartModel.belongsTo(UserModel);
-CartModel.belongsToMany(ProductModel, { through: CartProductModel })
-ProductModel.belongsToMany(CartModel, { through: CartProductModel })
+CartModel.belongsToMany(ProductModel, { through: CartProductModel });
+ProductModel.belongsToMany(CartModel, { through: CartProductModel });
+OrderModel.belongsTo(UserModel);
+UserModel.hasMany(OrderModel);
+OrderModel.belongsToMany(ProductModel, { through: OrderProductModel });
+ProductModel.belongsToMany(OrderModel, { through: OrderProductModel });
 
 sequelize
   // use FORCE only in development mode
