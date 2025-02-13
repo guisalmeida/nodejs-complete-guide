@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 const { ProductModel } = require('../models/productModel');
-const { CartModel } = require('../models/cartModel');
+// const { CartModel } = require('../models/cartModel');
 
 const getIndex = (req, res) => {
-  ProductModel.findAll().then((products) => {
+  ProductModel.fetchAll().then((products) => {
     res.render('shop/index', {
       prods: products,
       docTitle: 'Shop',
@@ -13,7 +13,7 @@ const getIndex = (req, res) => {
 };
 
 const getProducts = (req, res) => {
-  ProductModel.findAll().then((products) => {
+  ProductModel.fetchAll().then((products) => {
     res.render('shop/product-list', {
       prods: products,
       docTitle: 'Product List',
@@ -35,7 +35,7 @@ const getProduct = (req, res) => {
   //     });
   // }).catch((err) => console.log(err));
 
-  ProductModel.findByPk(prodId).then((product) => {
+  ProductModel.findById(prodId).then((product) => {
     res.render(
       'shop/product-detail',
       {
