@@ -21,7 +21,14 @@ const getAddProduct = (req, res) => {
 };
 
 const postAddProduct = (req, res) => {
-  const product = new ProductModel(req.body);
+  const userId = req.user._id.toString();
+  const newProduct = {
+    ...req.body,
+    userId
+  }
+
+  const product = new ProductModel(newProduct);
+
   product.save()
     .then(() => {
       res.redirect('/admin/products');
@@ -53,7 +60,13 @@ const getEditProduct = (req, res) => {
 };
 
 const postEditProduct = (req, res) => {
-  const product = new ProductModel(req.body);
+  const userId = req.user._id.toString();
+  const newProduct = {
+    ...req.body,
+    userId
+  }
+
+  const product = new ProductModel(newProduct);
 
   product.save()
     .then((result) => {
