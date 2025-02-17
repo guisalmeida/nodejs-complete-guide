@@ -50,13 +50,8 @@ class ProductModel {
     return db
       .collection('products')
       .findOne({ _id: new ObjectId(prodId) })
-      .then(product => {
-        console.log('pproduct', product);
-        return product;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      .then(product => product)
+      .catch(err => console.log(err));
   }
 
   static delete(prodId) {
