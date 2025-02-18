@@ -21,6 +21,28 @@ class UserModel {
       });
   }
 
+  getCart() {
+    const productIds = this.cart.items.map((item) => item.productId);
+    const db = getDb();
+
+    return db.collection('products')
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then((products) => {
+        return products.map((prod) => {
+          return {
+            ...prod,
+            quantity: this.cart.items.find((item) => {
+              return item.productId.toString() === prod._id.toString();
+            }).quantity
+          }
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   addToCart(product) {
     const cartProdIndex = this.cart.items.findIndex((cartProd) => {
       return cartProd.productId.toString() === product._id.toString();
