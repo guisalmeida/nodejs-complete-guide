@@ -44,8 +44,8 @@ class UserModel {
   }
 
   addToCart(product) {
-    const cartProdIndex = this.cart.items.findIndex((cartProd) => {
-      return cartProd.productId.toString() === product._id.toString();
+    const cartProdIndex = this.cart.items.findIndex((cartItem) => {
+      return cartItem.productId.toString() === product._id.toString();
     });
 
     let newQuantity = 1;
@@ -59,6 +59,16 @@ class UserModel {
     };
 
 
+    const updatedCart = { items: updatedCartItems };
+    const db = getDb();
+    return db.collection('users')
+      .updateOne({ _id: new ObjectId(this._id) }, { $set: { cart: updatedCart } })
+  }
+
+  removeFromCart(prodId) {
+    const updatedCartItems = this.cart.items.filter((cartItem) => {
+      return cartItem.productId.toString() !== prodId
+    });
     const updatedCart = { items: updatedCartItems };
     const db = getDb();
     return db.collection('users')
