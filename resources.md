@@ -22,3 +22,9 @@ Useful resources:
 - Learn more about MySQL/ SQL in General: https://www.w3schools.com/sql/
 
 - Sequelize Official Docs: http://docs.sequelizejs.com/
+
+- MongoDB Official Docs: https://docs.mongodb.com/manual/core/security-encryption-at-rest/https://docs.mongodb.com/manual/
+
+- SQL vs NoSQL: https://academind.com/learn/web-dev/sql-vs-nosql/
+
+- Learn more about MongoDB: https://academind.com/learn/mongodb
