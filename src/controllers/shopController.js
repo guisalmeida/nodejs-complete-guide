@@ -37,15 +37,26 @@ const getProduct = (req, res) => {
 };
 
 const getCart = (req, res) => {
-  req.user.getCart()
-    .then((cartProducts) => {
+  req.user
+    .populate('cart.items.productId')
+    .then((user) => {
       res.render('shop/cart', {
         docTitle: 'cart',
         path: '/cart',
-        products: cartProducts
+        products: user.cart.items
       });
     })
     .catch(err => console.log(err));
+
+  // req.user.getCart()
+  //   .then((cartProducts) => {
+  //     res.render('shop/cart', {
+  //       docTitle: 'cart',
+  //       path: '/cart',
+  //       products: cartProducts
+  //     });
+  //   })
+  //   .catch(err => console.log(err));
 };
 
 const getPostCart = (req, res) => {
