@@ -3,6 +3,7 @@ const { ProductModel } = require('../models/productModel');
 
 const getAdminProducts = (req, res) => {
   ProductModel.find()
+    // .populate('userId') retrieve all the data from user
     .then((products) => {
       res.render('admin/products', {
         prods: products,
@@ -21,17 +22,17 @@ const getAddProduct = (req, res) => {
 };
 
 const postAddProduct = (req, res) => {
-  // const userId = req.user._id.toString();
+  const userId = req.user._id;
   const newProduct = {
     ...req.body,
-    // userId
+    userId
   }
 
   const product = new ProductModel(newProduct);
 
   product.save()
     .then(() => {
-      // res.redirect('/admin/products');
+      res.redirect('/admin/products');
     })
     .catch(err => console.log(err));
 };
@@ -78,7 +79,7 @@ const postEditProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   const prodId = req.body.productId;
 
-  ProductModel.delete(prodId)
+  ProductModel.findByIdAndDelete(prodId)
     .then(() => {
       res.redirect('/admin/products');
     }).catch(err => console.log(err));
