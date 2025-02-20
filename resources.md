@@ -28,3 +28,5 @@ Useful resources:
 - SQL vs NoSQL: https://academind.com/learn/web-dev/sql-vs-nosql/
 
 - Learn more about MongoDB: https://academind.com/learn/mongodb
+
+- Mongoose Official Docs: https://mongoosejs.com/docs/
