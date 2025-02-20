@@ -38,9 +38,7 @@ class UserModel {
           }
         })
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => console.log(err));
   }
 
   addToCart(product) {
@@ -63,6 +61,40 @@ class UserModel {
     const db = getDb();
     return db.collection('users')
       .updateOne({ _id: new ObjectId(this._id) }, { $set: { cart: updatedCart } })
+  }
+
+  addOrder() {
+    const db = getDb();
+
+    return this.getCart().then((cartProducts) => {
+      const order = {
+        items: cartProducts,
+        user: {
+          _id: this._id,
+          name: this.name,
+          email: this.email
+        }
+      };
+
+      return db.collection('orders').insertOne(order);
+    })
+      .then(() => {
+        this.cart = { items: [] }
+        return db.collection('users')
+          .updateOne(
+            { _id: new ObjectId(this._id) },
+            { $set: { cart: this.cart } }
+          )
+      })
+      .catch(err => console.log(err));
+  }
+
+  getOrders() {
+    const db = getDb();
+
+    return db.collection('orders')
+      .find({ 'user._id': new ObjectId(this._id) })
+      .toArray();
   }
 
   removeFromCart(prodId) {

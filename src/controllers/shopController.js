@@ -73,7 +73,7 @@ const getPostCart = (req, res) => {
 };
 
 const getOrder = (req, res) => {
-  req.user.getOrders({ include: ['products'] })
+  req.user.getOrders()
     .then((orders) => {
       res.render('shop/orders', {
         docTitle: 'orders',
@@ -85,27 +85,9 @@ const getOrder = (req, res) => {
 };
 
 const postOrder = (req, res) => {
-  let fetchedCart;
-  req.user.getCart()
-    .then((cart) => {
-      fetchedCart = cart;
-      return cart.getProducts();
-    })
-    .then((products) => {
-      req.user.createOrder()
-        .then((order) => {
-          order.addProducts(products.map((prod) => {
-            prod.order_product = { quantity: prod.cart_product.quantity };
-            return prod;
-          }))
-        })
-        .catch(err => console.log(err))
-    })
+  req.user.addOrder()
     .then(() => {
-      return fetchedCart.setProducts(null);
-    })
-    .then(() => {
-      res.redirect('/orders');
+      res.redirect('/');
     })
     .catch(err => console.log(err));
 }
