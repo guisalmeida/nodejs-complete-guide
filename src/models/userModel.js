@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+// const { OrderModel } = require('./orderModel');
+// const { ProductModel } = require('./productModel');
 
 const userSchema = new Schema({
   name: {
@@ -74,6 +76,32 @@ userSchema.methods = {
     return this.save();
   },
 
+  // addOrder() {
+  //   const order = {
+  //     items: this.cart.items,
+  //     user: {
+  //       _id: this._id,
+  //       name: this.name,
+  //       email: this.email
+  //     }
+  //   };
+
+  //   return OrderModel.insertOne(order)
+  //     .then(() => {
+  //       this.cart = { items: [] }
+  //       return this.save();
+  //     })
+  //     .catch(err => console.log(err));
+  // },
+
+  // getOrders() {
+  //   return OrderModel.find({ 'user._id': this._id })
+  // }
+
+  clearCart() {
+    this.cart = { items: [] }
+    return this.save();
+  }
 }
 
 const UserModel = model('user', userSchema);

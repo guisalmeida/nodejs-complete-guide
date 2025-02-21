@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const { OrderModel } = require('../models/orderModel');
 const { ProductModel } = require('../models/productModel');
 // const { CartModel } = require('../models/cartModel');
 
@@ -74,21 +75,39 @@ const getPostCart = (req, res) => {
 };
 
 const getOrder = (req, res) => {
-  req.user.getOrders()
-    .then((orders) => {
-      res.render('shop/orders', {
-        docTitle: 'orders',
-        path: '/orders',
-        orders: orders
-      });
-    })
-    .catch((err) => console.log(err));
+  OrderModel.find({ 'user._id': req.user._id }).then((orders) => {
+    res.render('shop/orders', {
+      docTitle: 'orders',
+      path: '/orders',
+      orders: orders
+    });
+  }).catch((err) => console.log(err));
 };
 
 const postOrder = (req, res) => {
-  req.user.addOrder()
-    .then(() => {
-      res.redirect('/');
+  req.user
+    .populate('cart.items.productId')
+    .then((user) => {
+      const products = user.cart.items.map((item) => {
+        return {
+          quantity: item.quantity, product: item.productId._doc
+        }
+      });
+
+      const order = new OrderModel({
+        products: products,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email
+        }
+      });
+      return order.save();
+
+    }).then(() => {
+      return req.user.clearCart();
+    }).then(() => {
+      res.redirect('/orders');
     })
     .catch(err => console.log(err));
 }

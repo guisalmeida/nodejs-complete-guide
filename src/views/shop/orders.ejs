@@ -15,9 +15,9 @@
                   </h1>
                   <h3>Order products:</h3>
                   <ul>
-                    <% order.items.forEach(prod=> { %>
+                    <% order.products.forEach(prod=> { %>
                       <li>
-                        <%= prod.quantity %>x <%= prod.title %>
+                        <%= prod.quantity %>x <%= prod.product.title %>
                       </li>
                       <% }) %>
                   </ul>
