@@ -28,11 +28,13 @@
                 </div>
                 <div class="card__actions">
                   <a href="/product/<%= product._id %>" class="btn">Details</a>
-                  <!--
+                  <% if (isAuthenticated) {%>
+                    <!--
                     because include is within a for loop it cant access the product variable as it is local,
                     then we have to pass it as a second argument.
                   -->
-                  <%- include('../includes/add-to-cart.ejs', { product: product }) %>
+                    <%- include('../includes/add-to-cart.ejs', { product: product }) %>
+                      <% } %>
                 </div>
               </article>
               <% } %>

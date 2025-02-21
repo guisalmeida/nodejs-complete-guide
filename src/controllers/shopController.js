@@ -9,6 +9,7 @@ const getIndex = (req, res) => {
       prods: products,
       docTitle: 'Shop',
       path: '/',
+      isAuthenticated: req.session.isLoggedIn
     });
   }).catch((err) => console.log(err));
 };
@@ -19,6 +20,7 @@ const getProducts = (req, res) => {
       prods: products,
       docTitle: 'Product List',
       path: '/products',
+      isAuthenticated: req.session.isLoggedIn
     });
   }).catch((err) => console.log(err));
 };
@@ -32,7 +34,8 @@ const getProduct = (req, res) => {
       {
         docTitle: 'product detail',
         path: '/products',
-        product: product
+        product: product,
+        isAuthenticated: req.session.isLoggedIn
       });
   }).catch((err) => console.log(err));
 };
@@ -44,7 +47,8 @@ const getCart = (req, res) => {
       res.render('shop/cart', {
         docTitle: 'cart',
         path: '/cart',
-        products: user.cart.items
+        products: user.cart.items,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -55,6 +59,7 @@ const getCart = (req, res) => {
   //       docTitle: 'cart',
   //       path: '/cart',
   //       products: cartProducts
+  //       isAuthenticated: req.session.isLoggedIn
   //     });
   //   })
   //   .catch(err => console.log(err));
@@ -79,7 +84,8 @@ const getOrder = (req, res) => {
     res.render('shop/orders', {
       docTitle: 'orders',
       path: '/orders',
-      orders: orders
+      orders: orders,
+      isAuthenticated: req.session.isLoggedIn
     });
   }).catch((err) => console.log(err));
 };
@@ -112,7 +118,7 @@ const postOrder = (req, res) => {
     .catch(err => console.log(err));
 }
 
-const deleteCartItem = (req, res) => {
+const postDeleteCartItem = (req, res) => {
   const prodId = req.body.productId;
 
   req.user.removeFromCart(prodId)
@@ -130,6 +136,6 @@ module.exports = {
   getPostCart,
   getOrder,
   getProduct,
-  deleteCartItem,
+  postDeleteCartItem,
   postOrder
 };
