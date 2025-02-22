@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 // const { ProductModel } = require('./productModel');
 
 const userSchema = new Schema({
-  name: {
+  password: {
     type: String,
     required: true
   },

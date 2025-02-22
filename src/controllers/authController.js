@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-
+const bcrypt = require('bcrypt');
 const { UserModel } = require("../models/userModel");
 
 const getLogin = (req, res, next) => {
@@ -13,18 +13,34 @@ const getLogin = (req, res, next) => {
 }
 
 const postLogin = (req, res, next) => {
-  UserModel.findById('67b76d8121dcfdfc22b0ce27')
-    .then(user => {
-      req.session.isLoggedIn = true;
-      req.session.user = user;
+  const email = req.body.email;
+  const password = req.body.password;
 
-      // Just call redirect once session has saved on mongodb
-      req.session.save((err) => {
-        if (err) {
+  UserModel.findOne({ email: email })
+    .then(user => {
+      if (!user) {
+        return res.redirect('/login');
+      }
+
+      return bcrypt.compare(password, user.password)
+        .then((isCorrectPass) => {
+          if (isCorrectPass) {
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+
+            // Just call redirect once session has saved on mongodb
+            return req.session.save((err) => {
+              if (err) console.log(err);
+              res.redirect('/');
+            });
+          }
+
+          res.redirect('/login');
+        })
+        .catch(err => {
           console.log(err);
-        }
-        res.redirect('/');
-      });
+          return res.redirect('/login');
+        });
     })
     .catch(err => console.log(err));
 }
@@ -36,8 +52,46 @@ const postLogout = (req, res, next) => {
   });
 }
 
+const getSignup = (req, res, next) => {
+  res.render('auth/signup', {
+    path: '/signup',
+    docTitle: 'Signup',
+    isAuthenticated: false
+  });
+};
+
+const postSignup = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+
+  UserModel.findOne({ email: email })
+    .then((userDoc) => {
+      if (userDoc) {
+        res.redirect('/login');
+      }
+
+      return bcrypt.hash(password, 12)
+        .then((hashedPassword) => {
+          const user = new UserModel({
+            email,
+            password: hashedPassword,
+            cart: { items: [] }
+          });
+
+          return user.save();
+        })
+        .then(() => {
+          res.redirect('/login');
+        });
+    })
+    .catch(err => console.log(err));
+};
+
 module.exports = {
   getLogin,
   postLogin,
-  postLogout
+  postLogout,
+  getSignup,
+  postSignup
 }

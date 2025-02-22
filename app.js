@@ -57,20 +57,5 @@ app.use(shopRoutes);
 app.use(errorController.getError);
 
 mongoose.connect(uri)
-  .then(() => {
-    UserModel.findOne().then((user) => {
-      if (!user) {
-        const user = new UserModel({
-          name: 'Gui',
-          email: 'gui@teste.com',
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    });
-
-    app.listen(3000)
-  })
+  .then(() => app.listen(3000))
   .catch(err => console.log(err));
