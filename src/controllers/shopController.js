@@ -99,7 +99,6 @@ const postOrder = (req, res) => {
         products: products,
         user: {
           _id: user._id,
-          name: user.name,
           email: user.email
         }
       });
