@@ -9,7 +9,6 @@ const getAdminProducts = (req, res) => {
         prods: products,
         docTitle: 'Admin Products',
         path: '/admin/products',
-        isAuthenticated: req.session.isLoggedIn
       });
     }).catch((err) => console.log(err));
 };
@@ -19,7 +18,6 @@ const getAddProduct = (req, res) => {
     docTitle: 'Edit Product',
     path: '/admin/add-product',
     editMode: false,
-    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -58,7 +56,6 @@ const getEditProduct = (req, res) => {
       path: '/admin/edit-product',
       editMode: isEditMode,
       product: product,
-      isAuthenticated: req.session.isLoggedIn
     });
   }).catch((err) => console.log(err));
 };

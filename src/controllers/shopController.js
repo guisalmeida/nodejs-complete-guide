@@ -8,8 +8,7 @@ const getIndex = (req, res) => {
     res.render('shop/index', {
       prods: products,
       docTitle: 'Shop',
-      path: '/',
-      isAuthenticated: req.session.isLoggedIn
+      path: '/'
     });
   }).catch((err) => console.log(err));
 };
@@ -19,8 +18,7 @@ const getProducts = (req, res) => {
     res.render('shop/product-list', {
       prods: products,
       docTitle: 'Product List',
-      path: '/products',
-      isAuthenticated: req.session.isLoggedIn
+      path: '/products'
     });
   }).catch((err) => console.log(err));
 };
@@ -34,8 +32,7 @@ const getProduct = (req, res) => {
       {
         docTitle: 'product detail',
         path: '/products',
-        product: product,
-        isAuthenticated: req.session.isLoggedIn
+        product: product
       });
   }).catch((err) => console.log(err));
 };
@@ -47,8 +44,7 @@ const getCart = (req, res) => {
       res.render('shop/cart', {
         docTitle: 'cart',
         path: '/cart',
-        products: user.cart.items,
-        isAuthenticated: req.session.isLoggedIn
+        products: user.cart.items
       });
     })
     .catch(err => console.log(err));
@@ -59,7 +55,7 @@ const getCart = (req, res) => {
   //       docTitle: 'cart',
   //       path: '/cart',
   //       products: cartProducts
-  //       isAuthenticated: req.session.isLoggedIn
+
   //     });
   //   })
   //   .catch(err => console.log(err));
@@ -84,8 +80,7 @@ const getOrder = (req, res) => {
     res.render('shop/orders', {
       docTitle: 'orders',
       path: '/orders',
-      orders: orders,
-      isAuthenticated: req.session.isLoggedIn
+      orders: orders
     });
   }).catch((err) => console.log(err));
 };
