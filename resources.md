@@ -36,3 +36,7 @@ Useful resources:
 - More on Cookies: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
 
 - Express-session Official Docs: https://github.com/expressjs/session
+
+- Bcrypt Official Docs: https://github.com/dcodeIO/bcrypt.js
+
+- CSRF Attacks: https://www.acunetix.com/websitesecurity/csrf-attacks/
