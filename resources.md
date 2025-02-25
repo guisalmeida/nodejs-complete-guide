@@ -40,3 +40,7 @@ Useful resources:
 - Bcrypt Official Docs: https://github.com/dcodeIO/bcrypt.js
 
 - CSRF Attacks: https://www.acunetix.com/websitesecurity/csrf-attacks/
+
+- Nodemailer Official Docs: https://nodemailer.com/about/
+
+- SendGrid Official Docs: https://sendgrid.com/docs/

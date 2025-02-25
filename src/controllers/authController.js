@@ -2,6 +2,20 @@
 const bcrypt = require('bcrypt');
 const { UserModel } = require("../models/userModel");
 
+const nodemailer = require('nodemailer');
+const sgTransport = require('nodemailer-sendgrid-transport');
+
+require('dotenv').config();
+
+
+const options = {
+  auth: {
+    api_key: process.env.SG_API_KEY
+  }
+}
+
+const mailer = nodemailer.createTransport(sgTransport(options));
+
 const getLogin = (req, res, next) => {
   const [message] = req.flash('errorMessage');
 
@@ -89,7 +103,13 @@ const postSignup = (req, res, next) => {
         })
         .then(() => {
           res.redirect('/login');
-        });
+          return mailer.sendMail({
+            to: email,
+            from: 'hello@guisalmeida.com',
+            subject: 'Signup succeeded!',
+            html: '<h1>Signup succeeded!</h1>'
+          });
+        }).catch(err => console.log('send email error:', err));
     })
     .catch(err => console.log(err));
 };
