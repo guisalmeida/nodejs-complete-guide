@@ -3,12 +3,13 @@ const bcrypt = require('bcrypt');
 const { UserModel } = require("../models/userModel");
 
 const getLogin = (req, res, next) => {
-  console.log(req.session.isLoggedIn);
+  const [message] = req.flash('errorMessage');
 
   res.render('auth/login', {
     docTitle: 'Login',
     path: '/login',
-    isAuthenticated: false
+    isAuthenticated: false,
+    errorMessage: message
   });
 }
 
@@ -19,6 +20,7 @@ const postLogin = (req, res, next) => {
   UserModel.findOne({ email: email })
     .then(user => {
       if (!user) {
+        req.flash('errorMessage', 'User not found check your credentials!')
         return res.redirect('/login');
       }
 
@@ -34,11 +36,11 @@ const postLogin = (req, res, next) => {
               res.redirect('/');
             });
           }
-
+          req.flash('errorMessage', 'Invalid password!')
           res.redirect('/login');
         })
         .catch(err => {
-          console.log(err);
+          req.flash('errorMessage', err.message)
           return res.redirect('/login');
         });
     })
@@ -53,10 +55,13 @@ const postLogout = (req, res, next) => {
 }
 
 const getSignup = (req, res, next) => {
+  const [message] = req.flash('errorMessage');
+
   res.render('auth/signup', {
     path: '/signup',
     docTitle: 'Signup',
-    isAuthenticated: false
+    isAuthenticated: false,
+    errorMessage: message
   });
 };
 
@@ -68,7 +73,8 @@ const postSignup = (req, res, next) => {
   UserModel.findOne({ email: email })
     .then((userDoc) => {
       if (userDoc) {
-        res.redirect('/login');
+        req.flash('errorMessage', 'User already exists!')
+        return res.redirect('/login');
       }
 
       return bcrypt.hash(password, 12)
